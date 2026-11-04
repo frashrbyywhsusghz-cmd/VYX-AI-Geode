@@ -1,11 +1,11 @@
 {
   "geode": "6.0.0-alpha.1",
   "gd": {
-    "android": "2.2081"
+    "android": "2.2091"
   },
   "id": "vyx3286.vyx-ai",
   "name": "VYX AI",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "developer": "VYX3286",
   "description": "Android-first AI-assisted level analysis and creation toolkit for Geometry Dash."
 }
