@@ -5,11 +5,11 @@
 #include <Geode/modify/GJBaseGameLayer.hpp>
 
 #include <deque>
-#include <string>
+#include <string>\n#include <cctype>
 
 using namespace geode::prelude;
 
-struct VYXClickRecord {
+class VYXLayoutPopup;\n\nstruct VYXClickRecord {
     int frame = 0;
     int gap = -1;
     bool isPlayer1 = true;
@@ -184,7 +184,7 @@ public:
     }
 };
 
-class $modify(VYXMainMenuLayer, MenuLayer) {
+void VYXControlPopup::onOpenLayout(CCObject*) {\n    auto popup = VYXLayoutPopup::create();\n    if (popup) popup->show();\n}\n\nclass $modify(VYXMainMenuLayer, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
 
