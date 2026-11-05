@@ -15,7 +15,7 @@ struct VYXClickRecord {
     bool isPlayer1 = true;
 };
 
-class VYXControlPopup : public Popup<> {
+class VYXControlPopup : public Popup {
 protected:
     CCLabelBMFont* m_status = nullptr;
 
@@ -37,27 +37,34 @@ protected:
         return CCMenuItemSpriteExtra::create(sprite, this, callback);
     }
 
-    bool setup() override {
-        this->setTitle("VYX AI CONTROL");
+    bool init() {
+        if (!Popup::init(270.f, 220.f)) return false;
+
+        auto title = CCLabelBMFont::create("VYX AI CONTROL", "goldFont.fnt");
+        if (title) {
+            title->setScale(0.65f);
+            title->setPosition({ 135.f, 188.f });
+            this->addChild(title);
+        }
 
         m_status = CCLabelBMFont::create("", "bigFont.fnt");
         if (m_status) {
             m_status->setScale(0.29f);
-            m_status->setPosition({ m_mainLayer->getContentSize().width / 2.f, 142.f });
-            m_mainLayer->addChild(m_status);
+            m_status->setPosition({ 135.f, 158.f });
+            this->addChild(m_status);
         }
 
         auto menu = CCMenu::create();
-        menu->setPosition({ 0.f, 0.f });
-        m_mainLayer->addChild(menu);
+        menu->setPosition({ 135.f, 0.f });
+        this->addChild(menu);
 
         auto frames = makeButton("TOGGLE FRAME COUNTER", menu_selector(VYXControlPopup::onToggleFrames));
         auto clicks = makeButton("TOGGLE INPUT TRACKER", menu_selector(VYXControlPopup::onToggleClicks));
         auto history = makeButton("TOGGLE INPUT HISTORY", menu_selector(VYXControlPopup::onToggleHistory));
 
-        if (frames) { frames->setPosition({ 0.f, 78.f }); menu->addChild(frames); }
-        if (clicks) { clicks->setPosition({ 0.f, 33.f }); menu->addChild(clicks); }
-        if (history) { history->setPosition({ 0.f, -12.f }); menu->addChild(history); }
+        if (frames) { frames->setPosition({ 0.f, 125.f }); menu->addChild(frames); }
+        if (clicks) { clicks->setPosition({ 0.f, 80.f }); menu->addChild(clicks); }
+        if (history) { history->setPosition({ 0.f, 35.f }); menu->addChild(history); }
 
         refreshStatus();
         return true;
@@ -84,7 +91,7 @@ protected:
 public:
     static VYXControlPopup* create() {
         auto ret = new VYXControlPopup();
-        if (ret->init(270.f, 220.f, "GJ_square01.png")) {
+        if (ret->init()) {
             ret->autorelease();
             return ret;
         }
