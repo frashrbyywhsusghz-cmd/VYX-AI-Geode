@@ -42,35 +42,35 @@ protected:
     }
 
     bool init() {
-        if (!Popup::init(270.f, 260.f)) return false;
+        if (!Popup::init(290.f, 270.f)) return false;
 
         auto title = CCLabelBMFont::create("VYX AI CONTROL", "goldFont.fnt");
         if (title) {
             title->setScale(0.65f);
-            title->setPosition({ 135.f, 228.f });
-            this->addChild(title);
+            title->setPosition({ 145.f, 238.f });
+            m_mainLayer->addChild(title);
         }
 
         m_status = CCLabelBMFont::create("", "bigFont.fnt");
         if (m_status) {
             m_status->setScale(0.29f);
-            m_status->setPosition({ 135.f, 198.f });
-            this->addChild(m_status);
+            m_status->setPosition({ 145.f, 207.f });
+            m_mainLayer->addChild(m_status);
         }
 
         auto menu = CCMenu::create();
-        menu->setPosition({ 135.f, 0.f });
-        this->addChild(menu);
+        menu->setPosition({ 145.f, 0.f });
+        m_mainLayer->addChild(menu);
 
         auto frames = makeButton("TOGGLE FRAME COUNTER", menu_selector(VYXControlPopup::onToggleFrames));
         auto clicks = makeButton("TOGGLE INPUT TRACKER", menu_selector(VYXControlPopup::onToggleClicks));
         auto history = makeButton("TOGGLE INPUT HISTORY", menu_selector(VYXControlPopup::onToggleHistory));
         auto layout = makeButton("AI LAYOUT CREATOR", menu_selector(VYXControlPopup::onOpenLayout));
 
-        if (frames) { frames->setPosition({ 0.f, 155.f }); menu->addChild(frames); }
-        if (clicks) { clicks->setPosition({ 0.f, 110.f }); menu->addChild(clicks); }
-        if (history) { history->setPosition({ 0.f, 65.f }); menu->addChild(history); }
-        if (layout) { layout->setPosition({ 0.f, 20.f }); menu->addChild(layout); }
+        if (frames) { frames->setPosition({ 0.f, 160.f }); menu->addChild(frames); }
+        if (clicks) { clicks->setPosition({ 0.f, 116.f }); menu->addChild(clicks); }
+        if (history) { history->setPosition({ 0.f, 72.f }); menu->addChild(history); }
+        if (layout) { layout->setPosition({ 0.f, 28.f }); menu->addChild(layout); }
 
         refreshStatus();
         return true;
@@ -126,7 +126,7 @@ protected:
         if (p.find("hard") != std::string::npos || p.find("demon") != std::string::npos) difficulty = "HARD";
         if (p.find("easy") != std::string::npos) difficulty = "EASY";
         const int count = difficulty == "HARD" ? 12 : (difficulty == "EASY" ? 6 : 9);
-        std::string out = fmt::format("LOCAL LAYOUT BLUEPRINT\\nMODE: {}  |  DIFFICULTY: {}\\n", mode, difficulty);
+        std::string out = fmt::format("LOCAL LAYOUT BLUEPRINT\nMODE: {}  |  DIFFICULTY: {}\n", mode, difficulty);
         out += "START  ";
         for (int i = 0; i < count; ++i) {
             const char* piece = (i % 4 == 0) ? "SPIKE" : (i % 4 == 1) ? "GAP" : (i % 4 == 2) ? "ORB" : "PLATFORM";
@@ -134,38 +134,38 @@ protected:
             if (mode == "SHIP") piece = (i % 3 == 0) ? "SHIP-ALTITUDE" : "SHIP-GAP";
             out += fmt::format("{}{} ", piece, i + 1);
         }
-        out += "\\nEND\\nThis is a generated blueprint preview. It does not place objects in the editor yet.";
+        out += "\nEND\nBlueprint preview only. Editor placement is not implemented yet.";
         return out;
     }
 
     bool init() {
-        if (!Popup::init(330.f, 260.f)) return false;
+        if (!Popup::init(340.f, 290.f)) return false;
         auto title = CCLabelBMFont::create("VYX AI LAYOUT CREATOR", "goldFont.fnt");
         title->setScale(0.55f);
-        title->setPosition({165.f, 230.f});
-        this->addChild(title);
+        title->setPosition({170.f, 263.f});
+        m_mainLayer->addChild(title);
 
         m_prompt = CCTextInputNode::create(286.f, 28.f, "Describe your level layout", "bigFont.fnt");
         if (m_prompt) {
-            m_prompt->setPosition({165.f, 194.f});
+            m_prompt->setPosition({170.f, 222.f});
             m_prompt->setDelegate(this);
-            this->addChild(m_prompt);
+            m_mainLayer->addChild(m_prompt);
         }
 
         auto menu = CCMenu::create();
-        menu->setPosition({165.f, 0.f});
-        this->addChild(menu);
+        menu->setPosition({170.f, 0.f});
+        m_mainLayer->addChild(menu);
         auto generate = CCMenuItemSpriteExtra::create(
             ButtonSprite::create("GENERATE BLUEPRINT", 170, true, "goldFont.fnt", "GJ_button_01.png", 32.f, 0.7f),
             this, menu_selector(VYXLayoutPopup::onGenerate)
         );
-        generate->setPosition({0.f, 158.f});
+        generate->setPosition({0.f, 177.f});
         menu->addChild(generate);
 
         m_result = CCLabelBMFont::create("Choose a mode: cube, wave, ship, ball or UFO. Add easy, normal, hard or demon.", "bigFont.fnt");
         m_result->setAnchorPoint({0.5f, 1.f});
-        m_result->setPosition({165.f, 125.f});
-        m_result->setScale(0.34f);
+        m_result->setPosition({170.f, 145.f});
+        m_result->setScale(0.30f);
         m_result->setWidth(285.f);
         this->addChild(m_result);
         return true;
