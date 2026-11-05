@@ -23,10 +23,12 @@ protected:
         if (!m_status) return;
         const bool frames = Mod::get()->getSettingValue<bool>("frame-counter");
         const bool clicks = Mod::get()->getSettingValue<bool>("click-tracker");
+        const bool history = Mod::get()->getSettingValue<bool>("input-history");
         m_status->setString(fmt::format(
-            "FRAME COUNTER: {}    INPUT TRACKER: {}",
+            "FRAMES: {}   TRACKER: {}   HISTORY: {}",
             frames ? "ON" : "OFF",
-            clicks ? "ON" : "OFF"
+            clicks ? "ON" : "OFF",
+            history ? "ON" : "OFF"
         ).c_str());
     }
 
@@ -40,7 +42,7 @@ protected:
 
         m_status = CCLabelBMFont::create("", "bigFont.fnt");
         if (m_status) {
-            m_status->setScale(0.34f);
+            m_status->setScale(0.29f);
             m_status->setPosition({ m_mainLayer->getContentSize().width / 2.f, 142.f });
             m_mainLayer->addChild(m_status);
         }
@@ -51,9 +53,11 @@ protected:
 
         auto frames = makeButton("TOGGLE FRAME COUNTER", menu_selector(VYXControlPopup::onToggleFrames));
         auto clicks = makeButton("TOGGLE INPUT TRACKER", menu_selector(VYXControlPopup::onToggleClicks));
+        auto history = makeButton("TOGGLE INPUT HISTORY", menu_selector(VYXControlPopup::onToggleHistory));
 
-        if (frames) { frames->setPosition({ 0.f, 75.f }); menu->addChild(frames); }
-        if (clicks) { clicks->setPosition({ 0.f, 25.f }); menu->addChild(clicks); }
+        if (frames) { frames->setPosition({ 0.f, 78.f }); menu->addChild(frames); }
+        if (clicks) { clicks->setPosition({ 0.f, 33.f }); menu->addChild(clicks); }
+        if (history) { history->setPosition({ 0.f, -12.f }); menu->addChild(history); }
 
         refreshStatus();
         return true;
@@ -71,10 +75,16 @@ protected:
         refreshStatus();
     }
 
+    void onToggleHistory(CCObject*) {
+        const bool value = Mod::get()->getSettingValue<bool>("input-history");
+        Mod::get()->setSettingValue("input-history", !value);
+        refreshStatus();
+    }
+
 public:
     static VYXControlPopup* create() {
         auto ret = new VYXControlPopup();
-        if (ret->init(270.f, 200.f, "GJ_square01.png")) {
+        if (ret->init(270.f, 220.f, "GJ_square01.png")) {
             ret->autorelease();
             return ret;
         }
@@ -296,7 +306,8 @@ public:
         }
 
         if (fields->historyLabel) {
-            fields->historyLabel->setVisible(showClicks);
+            const bool showHistory = Mod::get()->getSettingValue<bool>("input-history");
+            fields->historyLabel->setVisible(showClicks && showHistory);
             std::string history = "RECENT INPUTS";
             for (const auto& click : fields->clickHistory) {
                 const std::string gapText = click.gap < 0
