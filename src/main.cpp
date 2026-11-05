@@ -5,11 +5,14 @@
 #include <Geode/modify/GJBaseGameLayer.hpp>
 
 #include <deque>
-#include <string>\n#include <cctype>
+#include <string>
+#include <cctype>
 
 using namespace geode::prelude;
 
-class VYXLayoutPopup;\n\nstruct VYXClickRecord {
+class VYXLayoutPopup;
+
+struct VYXClickRecord {
     int frame = 0;
     int gap = -1;
     bool isPlayer1 = true;
@@ -18,6 +21,7 @@ class VYXLayoutPopup;\n\nstruct VYXClickRecord {
 class VYXControlPopup : public Popup {
 protected:
     CCLabelBMFont* m_status = nullptr;
+    void onOpenLayout(CCObject*);
 
     void refreshStatus() {
         if (!m_status) return;
@@ -65,7 +69,8 @@ protected:
 
         if (frames) { frames->setPosition({ 0.f, 155.f }); menu->addChild(frames); }
         if (clicks) { clicks->setPosition({ 0.f, 110.f }); menu->addChild(clicks); }
-        if (history) { history->setPosition({ 0.f, 65.f }); menu->addChild(history); }\n        if (layout) { layout->setPosition({ 0.f, 20.f }); menu->addChild(layout); }
+        if (history) { history->setPosition({ 0.f, 65.f }); menu->addChild(history); }
+        if (layout) { layout->setPosition({ 0.f, 20.f }); menu->addChild(layout); }
 
         refreshStatus();
         return true;
@@ -184,7 +189,12 @@ public:
     }
 };
 
-void VYXControlPopup::onOpenLayout(CCObject*) {\n    auto popup = VYXLayoutPopup::create();\n    if (popup) popup->show();\n}\n\nclass $modify(VYXMainMenuLayer, MenuLayer) {
+void VYXControlPopup::onOpenLayout(CCObject*) {
+    auto popup = VYXLayoutPopup::create();
+    if (popup) popup->show();
+}
+
+class $modify(VYXMainMenuLayer, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
 
