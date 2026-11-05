@@ -15,11 +15,77 @@ struct VYXClickRecord {
     bool isPlayer1 = true;
 };
 
+class VYXControlPopup : public Popup<> {
+protected:
+    CCLabelBMFont* m_status = nullptr;
+
+    void refreshStatus() {
+        if (!m_status) return;
+        const bool frames = Mod::get()->getSettingValue<bool>("frame-counter");
+        const bool clicks = Mod::get()->getSettingValue<bool>("click-tracker");
+        m_status->setString(fmt::format(
+            "FRAME COUNTER: {}    INPUT TRACKER: {}",
+            frames ? "ON" : "OFF",
+            clicks ? "ON" : "OFF"
+        ).c_str());
+    }
+
+    CCMenuItemSpriteExtra* makeButton(const char* text, SEL_MenuHandler callback) {
+        auto sprite = ButtonSprite::create(text, 150, true, "goldFont.fnt", "GJ_button_01.png", 32.f, 0.7f);
+        return CCMenuItemSpriteExtra::create(sprite, this, callback);
+    }
+
+    bool setup() override {
+        this->setTitle("VYX AI CONTROL");
+
+        m_status = CCLabelBMFont::create("", "bigFont.fnt");
+        if (m_status) {
+            m_status->setScale(0.34f);
+            m_status->setPosition({ m_mainLayer->getContentSize().width / 2.f, 142.f });
+            m_mainLayer->addChild(m_status);
+        }
+
+        auto menu = CCMenu::create();
+        menu->setPosition({ 0.f, 0.f });
+        m_mainLayer->addChild(menu);
+
+        auto frames = makeButton("TOGGLE FRAME COUNTER", menu_selector(VYXControlPopup::onToggleFrames));
+        auto clicks = makeButton("TOGGLE INPUT TRACKER", menu_selector(VYXControlPopup::onToggleClicks));
+
+        if (frames) { frames->setPosition({ 0.f, 75.f }); menu->addChild(frames); }
+        if (clicks) { clicks->setPosition({ 0.f, 25.f }); menu->addChild(clicks); }
+
+        refreshStatus();
+        return true;
+    }
+
+    void onToggleFrames(CCObject*) {
+        const bool value = Mod::get()->getSettingValue<bool>("frame-counter");
+        Mod::get()->setSettingValue("frame-counter", !value);
+        refreshStatus();
+    }
+
+    void onToggleClicks(CCObject*) {
+        const bool value = Mod::get()->getSettingValue<bool>("click-tracker");
+        Mod::get()->setSettingValue("click-tracker", !value);
+        refreshStatus();
+    }
+
+public:
+    static VYXControlPopup* create() {
+        auto ret = new VYXControlPopup();
+        if (ret->init(270.f, 200.f, "GJ_square01.png")) {
+            ret->autorelease();
+            return ret;
+        }
+        delete ret;
+        return nullptr;
+    }
+};
+
 class $modify(VYXMainMenuLayer, MenuLayer) {
     bool init() {
-        if (!MenuLayer::init()) {
-            return false;
-        }
+        if (!MenuLayer::init()) return false;
 
         auto menu = this->getChildByID("bottom-menu");
         if (!menu) {
@@ -28,39 +94,22 @@ class $modify(VYXMainMenuLayer, MenuLayer) {
         }
 
         auto sprite = CCSprite::createWithSpriteFrameName("GJ_optionsBtn_001.png");
-        if (!sprite) {
-            sprite = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
-        }
-        if (!sprite) {
-            log::warn("VYX AI: could not create menu button sprite");
-            return true;
-        }
+        if (!sprite) sprite = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
+        if (!sprite) return true;
 
         auto button = CCMenuItemSpriteExtra::create(
-            sprite,
-            this,
-            menu_selector(VYXMainMenuLayer::onVYXAI)
+            sprite, this, menu_selector(VYXMainMenuLayer::onVYXAI)
         );
         button->setID("vyx-ai-entry"_spr);
         menu->addChild(button);
         menu->updateLayout();
-
-        log::info("VYX AI {} loaded", "0.3.0");
+        log::info("VYX AI {} loaded", "0.4.0");
         return true;
     }
 
     void onVYXAI(CCObject*) {
-        FLAlertLayer::create(
-            "VYX AI",
-            "Live gameplay tools are active:\n"
-            "• Physics-frame counter\n"
-            "• Player 1 / Player 2 jump-input tracker\n"
-            "• Input frame numbers and gaps between clicks\n"
-            "• Recent input history\n\n"
-            "Accurate click-tolerance analysis and macro replay "
-            "are not included in this build.",
-            "OK"
-        )->show();
+        auto popup = VYXControlPopup::create();
+        if (popup) popup->show();
     }
 };
 
