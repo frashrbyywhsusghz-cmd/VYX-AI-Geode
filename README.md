@@ -1,36 +1,26 @@
 # VYX AI for Geometry Dash
 
-Android-first Geode mod project targeting Geometry Dash 2.2081+.
+Android64 Geode mod targeting Geometry Dash **2.2081** and Geode **5.11.2**.
 
-## Current status
+## Implemented in 0.3.0
 
-This repository is the initial project foundation. The first build adds a VYX AI entry button to the Geometry Dash main menu. The AI reader, replay engine, level generator, decoration generator, and online AI service are planned modules and are **not implemented yet**.
+- Live frame counter driven by the PlayerObject update loop rather than the render/update hook.
+- P1 and P2 jump-press counters.
+- The frame number assigned to each jump press.
+- The number of physics frames between consecutive jump presses for each player.
+- A four-entry on-screen input history.
+- Separate settings for the frame counter and jump-input tracker.
 
-## Planned modules
+The input log records when the jump input reaches the game's input hook. The displayed gap is the spacing between that player's recorded jump presses. It is **not** a calculated success-tolerance window. Accurate click-slack analysis, macro import/export, and replay simulation are not implemented yet.
 
-- **AI Reader:** inspect a level and report whether analysis completed.
-- **Local analysis:** physics-aware path and collision analysis.
-- **Replay:** reproduce a saved input sequence with configurable timing.
-- **Level Creator:** generate a gameplay layout from a text prompt and difficulty.
-- **Decoration Creator:** generate decoration plans and visual themes from a prompt.
-- **Online AI bridge:** optional remote generation service. No API key is embedded in this repository.
+## Install
 
-## Android build
+1. Download the `VYX-AI-Android64` artifact from the successful GitHub Actions run.
+2. Install the `.geode` package using Geode's **Install from file** option.
+3. Restart Geometry Dash.
 
-GitHub Actions builds an Android 64-bit `.geode` package when code is pushed to `main`, and can also be started manually from the Actions tab.
+The package is for Android 64-bit and is not a standalone APK.
 
-1. Open the **Actions** tab.
-2. Select **Build Android64 Geode Mod**.
-3. Press **Run workflow**.
-4. When it finishes, open the run and download the `VYX-AI-Android64` artifact.
-5. Extract the `.geode` file and install it with Geode.
+## Build
 
-This produces a Geode mod package, not a standalone APK. The Android 32-bit target is not enabled yet.
-
-## Install location
-
-`Android/media/com.geode.launcher/game/geode/mods/`
-
-## Development
-
-The project uses the official Geode SDK and the `geode-sdk/build-geode-mod` GitHub Action. See the [Geode modding documentation](https://docs.geode-sdk.org/).
+The GitHub Actions workflow uses the Geode 5.11.2 SDK and builds the Android64 target for Geometry Dash 2.2081.
