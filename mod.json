@@ -5,9 +5,9 @@
   },
   "id": "vyx3286.vyx-ai",
   "name": "VYX AI",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "developer": "VYX3286",
-  "description": "Android gameplay frame counter and P1/P2 jump-input frame tracker.",
+  "description": "Interactive VYX AI control menu with live physics frame counter, P1/P2 jump input tracker, and recent input history.",
   "settings": {
     "frame-counter": {
       "name": "Physics Frame Counter",
@@ -18,6 +18,12 @@
     "click-tracker": {
       "name": "Jump Input Tracker",
       "description": "Count P1/P2 jump presses and show their frame numbers and spacing.",
+      "type": "bool",
+      "default": true
+    },
+    "input-history": {
+      "name": "Recent Input History",
+      "description": "Show the four most recent P1/P2 jump inputs in the gameplay HUD.",
       "type": "bool",
       "default": true
     }
