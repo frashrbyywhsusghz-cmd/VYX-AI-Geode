@@ -5,7 +5,15 @@
   },
   "id": "vyx3286.vyx-ai",
   "name": "VYX AI",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "developer": "VYX3286",
-  "description": "Android-first AI-assisted level analysis and creation toolkit for Geometry Dash."
+  "description": "Android-first Geometry Dash toolkit with a gameplay frame window counter.",
+  "settings": {
+    "frame-counter": {
+      "name": "Frame Window Counter",
+      "description": "Show the live gameplay frame count and a +/-2 frame reference window.",
+      "type": "bool",
+      "default": true
+    }
+  }
 }
