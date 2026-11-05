@@ -5,13 +5,19 @@
   },
   "id": "vyx3286.vyx-ai",
   "name": "VYX AI",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "developer": "VYX3286",
-  "description": "Android-first Geometry Dash toolkit with a gameplay frame window counter.",
+  "description": "Android gameplay frame counter and P1/P2 jump-input frame tracker.",
   "settings": {
     "frame-counter": {
-      "name": "Frame Window Counter",
-      "description": "Show the live gameplay frame count and a +/-2 frame reference window.",
+      "name": "Physics Frame Counter",
+      "description": "Show the live physics-frame number during gameplay.",
+      "type": "bool",
+      "default": true
+    },
+    "click-tracker": {
+      "name": "Jump Input Tracker",
+      "description": "Count P1/P2 jump presses and show their frame numbers and spacing.",
       "type": "bool",
       "default": true
     }
