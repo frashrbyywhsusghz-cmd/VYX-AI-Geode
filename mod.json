@@ -5,9 +5,9 @@
   },
   "id": "vyx3286.vyx-ai",
   "name": "VYX AI",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "developer": "VYX3286",
-  "description": "Interactive VYX AI control menu with live physics frame counter, P1/P2 jump input tracker, and recent input history.",
+  "description": "Interactive control menu with live frame and input tracking plus a prompt-driven local layout blueprint generator.",
   "settings": {
     "frame-counter": {
       "name": "Physics Frame Counter",
