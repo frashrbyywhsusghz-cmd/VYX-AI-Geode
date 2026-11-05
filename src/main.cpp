@@ -65,6 +65,7 @@ class $modify(VYXMainMenuLayer, MenuLayer) {
 };
 
 class $modify(VYXPlayLayer, PlayLayer) {
+public:
     struct Fields {
         int frameCount = 0;
         int p1Clicks = 0;
